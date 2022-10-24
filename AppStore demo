@@ -1,0 +1,26 @@
+class AppStore:
+    __store = []
+    def add_application(self, app):
+        self.app = app
+        self.__store.append(app)
+        
+        
+    def remove_application(self, app):
+        self.app = app
+        self.__store.remove(app)
+    
+    def block_application(self, app):
+         for obj in self.__store:
+            if obj.name == app.name:
+                obj.blocked = True
+        
+        
+    
+    
+    def total_apps(self):
+        return len(self.__store)
+
+class Application:
+    def __init__(self, name, blocked=False):
+        self.name = name
+        self.blocked = blocked    
