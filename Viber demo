@@ -1,0 +1,29 @@
+class Viber:
+    lst =[]
+    @classmethod
+    def add_message(cls, msg):
+        cls.lst.append(msg)
+    @classmethod
+    def remove_message(cls, msg):
+        if msg in cls.lst:
+            cls.lst.remove(msg)
+    @classmethod        
+    def set_like(cls, msg):
+        if msg in cls.lst:
+            for obj in cls.lst:
+                if obj == msg and obj.fl_like ==True:
+                    obj.fl_like = False
+                elif obj == msg and obj.fl_like ==False:
+                    obj.fl_like = True
+    @classmethod                
+    def show_last_message(cls, count):
+        return cls.lst[-1]
+        
+    @classmethod       
+    def total_messages(cls):
+        return len(cls.lst)
+    
+class Message:
+    def __init__(self, text, fl_like=False):
+        self.text = text
+        self.fl_like = fl_like
