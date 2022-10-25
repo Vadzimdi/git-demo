@@ -1,0 +1,59 @@
+class LinkedList:
+    def __init__(self):
+        self.lst = []
+        self.head = None
+        self.tail = None
+
+    def add_obj(self, obj):
+        if len(self.lst) == 0:
+            self.lst.append(obj)
+            self.head = self.lst[-1]
+            self.tail = self.lst[-1]
+        elif len(self.lst) != 0:
+            self.lst.append(obj)
+            self.tail = self.lst[-1]
+            self.lst[-2].set_next(self.lst[-1])
+            self.lst[-1].set_prev(self.lst[-2])
+
+
+    def remove_obj(self):
+        if len(self.lst) > 1:
+            self.lst[-2].set_next(None)
+            self.tail = self.lst[-2]
+            self.lst.remove(self.lst[-1])
+        else:
+            self.lst.remove(self.lst[-1])
+
+
+    def get_data(self):
+        s = []
+        if len(self.lst) != 0:
+            for obj in self.lst:
+                s.append(obj.get_data())
+            return s
+        else:
+            return []
+
+class ObjList:
+    def __init__(self, data):
+        self.__data = data
+        self.__next = None
+        self.__prev = None
+
+    def set_next(self, obj):
+        self.__next = obj
+
+    def set_prev(self, obj):
+        self.__prev = obj
+
+    def get_next(self):
+        return self.__next
+
+    def get_prev(self):
+        return self.__prev
+
+    def set_data(self, data):
+        self.__data = data
+
+    def get_data(self):
+        return self.__data
