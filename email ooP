@@ -1,0 +1,48 @@
+from string import ascii_letters, digits
+import random
+
+class EmailValidator:
+    symbols = ascii_letters + digits + '_.'
+    symbols1 = ascii_letters + digits + '_.@'
+    count = 0
+    symbolslst = ['A', 'T', 'Y', '3', '5', '8', '_', 'r', 'z', 'v']
+
+    def __new__(cls, *args, **kwargs):
+        pass
+
+
+    @classmethod
+    def get_random_email(cls):
+        random.shuffle(cls.symbolslst)
+        return ''.join(cls.symbolslst) + '@gmail.com'
+
+
+    @classmethod
+    def check_email(cls, email):
+        if not cls.__is_email_str(email):
+            return False
+        s = any(map(lambda x: x not in cls.symbols1, email))
+        if email.count('@') > 1:
+            return False
+        elif s:
+            return False
+        elif len(email[:email.index('@')]) > 100:
+            return False
+        elif len(email[email.index('@'):]) > 50:
+            return False
+        elif '.' not in email[email.index('@'):]:
+            return False
+        for i in email:
+            if i == '.' and cls.count == 1:
+                return False
+            if i == '.':
+                cls.count += 1
+            else:
+                cls.count = 0
+        return True
+
+    @staticmethod
+    def __is_email_str(email):
+        if not type(email) == str:
+            return False
+        return True
