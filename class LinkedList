@@ -1,0 +1,69 @@
+class LinkedList:
+    def __init__(self):
+        self.lst = []
+        self.head = None
+        self.tail = None
+
+    def add_obj(self, obj):
+        self.lst.append(obj)
+        if len(self.lst) > 1:
+            self.lst[-2].next = self.lst[-1]
+            self.lst[-1].prev = self.lst[-2]
+            self.tail = self.lst[-1]
+        else:
+
+            self.head = self.lst[0]
+            self.tail = self.lst[0]
+
+    def remove_obj(self, indx):
+        if indx == 0:
+            if len(self.lst) == 1:
+                self.tail = None
+                self.head = None
+                del self.lst[indx]
+            else:
+                self.head = self.lst[indx+1]
+                self.lst[indx+1].prev = None
+                del self.lst[indx]
+        elif indx == len(self.lst)-1:
+            self.tail = self.lst[indx-1]
+            self.lst[indx-1].next = None
+            del self.lst[indx]
+        else:
+            self.lst[indx+1].prev = self.lst[indx-1]
+            self.lst[indx-1].next = self.lst[indx+1]
+            del self.lst[indx]
+
+
+    def __len__(self):
+        return len(self.lst)
+
+    def __call__(self, ind, *args, **kwargs):
+        return self.lst[ind].dat
+
+
+class ObjList:
+    def __init__(self, data):
+        self.__data = data
+        self.__prev = None
+        self.__next = None
+
+    @property
+    def dat(self):
+        return self.__data
+
+    @property
+    def prev(self):
+        return self.__prev
+
+    @prev.setter
+    def prev(self, item):
+        self.__prev = item
+
+    @property
+    def next(self):
+        return self.__next
+
+    @next.setter
+    def next(self, item):
+        self.__next = item
