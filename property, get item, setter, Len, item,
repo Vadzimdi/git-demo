@@ -1,0 +1,75 @@
+class StackObj:
+    def __init__(self, data):
+        self.__data = data
+        self.__next = None
+
+    @property
+    def data(self):
+        return self.__data
+
+    @data.setter
+    def data(self, obj):
+        self.__data = obj
+
+    @property
+    def next(self):
+        return self.__next
+
+    @next.setter
+    def next(self, obj):
+        self.__next = obj
+
+
+class Stack:
+    def __init__(self):
+        self.lst = []
+        self.top = None
+
+    def push_back(self, obj):
+        self.lst.append(obj)
+
+    def push_front(self, obj):
+        self.lst.insert(0, obj)
+
+    def __getitem__(self, item):
+        if type(item) == int and 0<= item < len(self.lst):
+            return self.lst[item]
+        else:
+            raise IndexError('неверный индекс')
+
+    def __setitem__(self, key, value):
+        if type(key) == int and 0 <= key < len(self.lst):
+            self.lst[key] = value
+        else:
+            raise IndexError('неверный индекс')
+
+
+    def __len__(self):
+        return len(self.lst)
+
+    def __iter__(self):
+        self.value = 0
+        return self
+
+    def __next__(self):
+        if self.value+1 < len(self.lst):
+            self.value += 1
+            return self.lst[self.value-1]
+        else:
+            raise StopIteration
+
+
+st = Stack()
+st.push_back(StackObj("1"))
+st.push_front(StackObj("2"))
+assert st[0] == "2" and st[1] == "1", "неверные значения данных из объектов стека, при обращении к ним по индексу"
+st[0] = "0"
+assert st[0] == "0", "получено неверное значение из объекта стека, возможно, некорректно работает присваивание нового значения объекту стека"
+for obj in st:
+    assert isinstance(obj, StackObj), "при переборе стека через цикл должны возвращаться объекты класса StackObj"
+try:
+    a = st[3]
+except IndexError:
+    assert True
+else:
+    assert False, "не сгенерировалось исключение IndexError"
