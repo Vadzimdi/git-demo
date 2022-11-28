@@ -1,0 +1,24 @@
+class Singleton:
+    instance = None
+    instance_base = None
+
+    def __new__(cls, *args, **kwargs):
+        if cls == Singleton:
+            if cls.instance_base == None:
+                cls.instance_base = super().__new__(cls)
+                return cls.instance_base
+
+        if cls.instance is None:
+            cls.instance = super().__new__(cls)
+        return cls.instance
+
+
+class Game(Singleton):
+    def __init__(self, name):
+        if 'name' not in self.__dict__:
+            self.name = name
+
+
+s = Singleton()
+g1 = Game('game1')
+g2 = Game('game2')
