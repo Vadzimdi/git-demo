@@ -1,0 +1,44 @@
+from abc import ABC, abstractmethod
+class StackInterface:
+    @abstractmethod
+    def push_back(self, obj):
+        raise TypeError
+
+    @abstractmethod
+    def pop_back(self):
+        raise TypeError
+
+
+class Stack(StackInterface):
+    def __init__(self):
+        self._top = None
+        self.lst = []
+
+    def push_back(self, obj):
+        self.lst.append(obj)
+        self._top = self.lst[0]
+        if len(self.lst) > 1:
+            self.lst[-2].next = self.lst[-1]
+
+    def pop_back(self):
+        s = self.lst.pop()
+        if len(self.lst) == 0:
+            self._top = None
+            return s
+        else:
+            self.lst[-1].next = None
+            return s
+
+
+class StackObj:
+    def __init__(self, data):
+        self._data = data
+        self._next = None
+
+    @property
+    def next(self):
+        return self._next
+
+    @next.setter
+    def next(self, obj):
+        self._next = obj
