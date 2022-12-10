@@ -1,0 +1,130 @@
+class CellException(Exception):
+    '''Main Exception'''
+
+
+class CellIntegerException(CellException):
+    '''значение выходит за допустимый диапазон'''
+
+
+class CellFloatException(CellException):
+    '''значение выходит за допустимый диапазон'''
+
+
+class CellStringException(CellException):
+    '''длина строки выходит за допустимый диапазон'''
+
+
+class CellInteger:
+    def __init__(self, min_value, max_value):
+        self._min_value = min_value
+        self._max_value = max_value
+        self._value = None
+
+    @property
+    def value(self):
+        return self._value
+
+    @value.setter
+    def value(self, obj):
+        if type(obj) in (int,) and self._min_value <= obj <= self._max_value:
+            self._value = obj
+        else:
+            raise CellIntegerException('значение выходит за допустимый диапазон')
+
+
+
+class CellFloat:
+    def __init__(self, min_value, max_value):
+        self._min_value = min_value
+        self._max_value = max_value
+        self._value = None
+
+    @property
+    def value(self):
+        return self._value
+
+    @value.setter
+    def value(self, obj):
+        if type(obj) in (float,) and self._min_value <= obj <= self._max_value:
+            self._value = obj
+        else:
+            raise CellFloatException('значение выходит за допустимый диапазон')
+
+
+
+class CellString:
+    def __init__(self, min_length, max_length):
+        self._min_length = min_length
+        self._max_length = max_length
+        self._value = None
+
+    @property
+    def value(self):
+        return self._value
+
+    @value.setter
+    def value(self, obj):
+        if type(obj) in (str,) and self._min_length <= len(obj) <= self._max_length:
+            self._value = obj
+        else:
+            raise CellStringException('длина строки выходит за допустимый диапазон')
+
+
+
+class TupleData:
+    def __init__(self, *args):
+        self.list = list(args)
+
+    def __getitem__(self, indx):
+        if type(indx) == int and 0 <= indx < len(self.list):
+            return self.list[indx].value
+        else:
+            raise IndexError
+
+    def __setitem__(self, indx, obj):
+        if type(indx) == int and 0 <= indx < len(self.list):
+            self.list[indx].value = obj
+        else:
+            raise IndexError
+
+    def __len__(self):
+        return len(self.list)
+
+    def __iter__(self):
+        for x in self.list:
+            yield x.value
+            
+            
+t = TupleData(CellInteger(-10, 10), CellInteger(0, 2), CellString(5, 10))
+d = (1, 0, 'sergey')
+t[0] = d[0]
+t[1] = d[1]
+t[2] = d[2]
+for i, x in enumerate(t):
+    assert x == d[i], "объект класса TupleData хранит неверную информацию"
+assert len(t) == 3, "неверное число элементов в объекте класса TupleData"
+
+cell = CellFloat(-5, 5)
+try:
+    cell.value = -6.0
+except CellFloatException:
+    assert True
+else:
+    assert False, "не сгенерировалось исключение CellFloatException"
+    
+cell = CellInteger(-1, 7)
+try:
+    cell.value = 8
+except CellIntegerException:
+    assert True
+else:
+    assert False, "не сгенерировалось исключение CellIntegerException"
+    
+cell = CellString(5, 7)
+try:
+    cell.value = "hello world"
+except CellStringException:
+    assert True
+else:
+    assert False, "не сгенерировалось исключение CellStringException"
+assert issubclass(CellIntegerException, CellException) and issubclass(CellFloatException, CellException) and issubclass(CellStringException, CellException), "классы CellIntegerException, CellFloatException, CellStringException должны наследоваться от класса CellException"            
